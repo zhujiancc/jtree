@@ -22,7 +22,7 @@ Vue.component('tree',Tree)
 ## Props Introduce
 
 * tree : A array data ,must contain 'id , name , check , children' like:
-```json
+```
 tree:[
   {
     name:'root',
@@ -48,7 +48,7 @@ tree:[
 ``` 
 
 * lang : set different languages=>
-```json
+```
 //zh-cn
 {
   addRoot: "新增根节点",
@@ -71,4 +71,6 @@ tree:[
 }
 
 ```
- [more...](https://cn.vuejs.org/v2/examples/tree-view.html)
+
+---
+ [More...](https://github.com/zhujiancc/jtree)
