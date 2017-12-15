@@ -5,7 +5,27 @@
     <title>v-tree</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <tree :tree="tree" :options="options"></tree>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
     <script src="/dist/build.js"></script>
+    <script>
+      new Vue({
+        el:'#app',
+        data:{
+          tree:[
+            {name:'root',check:false,id:1,children:[]}
+          ],
+          options:{
+            edit:true,
+            del:true
+          }
+        },
+        methods:{
+
+        }
+      })
+    </script>
   </body>
 </html>
