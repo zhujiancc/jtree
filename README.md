@@ -1,4 +1,4 @@
-# v-tree
+# j-tree
 
 > A Vue.js project of Tree
 
