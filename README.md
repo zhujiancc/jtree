@@ -71,6 +71,3 @@ tree:[
 }
 
 ```
-
----
- [More...](https://github.com/zhujiancc/jtree)
