@@ -1,31 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>v-tree</title>
-  </head>
-  <body>
-    <div id="app">
-      <tree :tree="tree" :options="options"></tree>
-    </div>
-    <script src="https://unpkg.com/vue"></script>
-    <script src="/dist/build.js"></script>
-    <script>
-      new Vue({
-        el:'#app',
-        data:{
-          tree:[
-            {name:'root',check:false,id:1,children:[]}
-          ],
-          options:{
-            edit:true,
-            del:true
+
+<head>
+  <meta charset="utf-8">
+  <title>v-tree</title>
+</head>
+
+<body>
+  <div id="app">
+    <tree :tree="tree" :options="options"></tree>
+    <button @click="save" style="margin-left:20px">保存</button>
+    {{result}}
+  </div>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="/dist/build.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        tree: [
+          {
+            name: 'root', check: false, id: 1, children: [
+              {
+                name: 'asd', check: false, id: 2, children: [
+                  { name: 'fsdf', check: false, id: 3, children: [] }
+                ]
+              },
+              { name: 'fgfgr', check: false, id: 4, children: [] }
+            ]
+          }
+        ],
+        result: '',
+        options: {
+          edit: true,
+          del: true
+        }
+      },
+      created(){
+        this.getTrees(this.tree,"2:asd")
+      },
+      methods: {
+        save() {
+          this.result = this.getAllCheck(this.tree)
+        },
+        getAllCheck() {
+          let arr = []
+          for (let i = 0; i < this.tree.length; i++) {
+            arr.push(this.getTreeCheck(this.tree[i]))
+          }
+          return arr.join(',')
+        },
+        getTreeCheck(tree) {
+          let arr = []
+          if (!tree.children) return []
+          if (tree.check) return [tree.id + ":" + tree.name]
+          for (let i = 0; i < tree.children.length; i++) {
+            let node = tree.children[i]
+            if (node.check) {
+              arr.push(node.id + ":" + node.name)
+            } else {
+              let ret = this.getTreeCheck(node)
+              if (ret.length > 0) arr.push(ret)
+            }
+          }
+          return arr
+        },
+        getTrees(trees, str) {
+          let arr = str.split(',')
+          for (let i = 0; i < trees.length; i++) {
+            this.checkTree(trees[i], arr)
           }
         },
-        methods:{
-
+        checkTree(tree, arr) {
+          if (!tree.children) return
+          let res=arr.filter(item=>tree.id==item.split(':')[0])
+          if(res&&res.length>0){
+            this.checkAll(tree)
+            return 
+          }
+          for (let i = 0; i < tree.children.length; i++) {
+            let node=tree.children[i]
+            let isExist=arr.filter(item=>node.id==item.split(':')[0])
+            if(isExist&&isExist.length){
+              this.checkAll(node)
+            }else{
+              this.checkTree(node,arr)
+            }
+          }
+        },
+        checkAll(tree){
+          if (!tree.children) return
+          tree.check=true
+          for (let i = 0; i < tree.children.length; i++) {
+            tree.children[i].check=true
+            this.checkAll(tree.children[i])
+          }
         }
-      })
-    </script>
-  </body>
+      }
+    })
+  </script>
+</body>
+
 </html>
